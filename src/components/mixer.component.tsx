@@ -23,13 +23,16 @@ export const Mixer = () => {
         </button>
       </div>
       <div className="tracks">
-        {trackActorRefs.map((trackActorRef, index) => (
-          <TrackContext.Provider options={{ input: tracks }}>
-            <Track
-              actorRef={trackActorRef.id}
-              index={index}
-              key={trackActorRef.id}
-            />
+        {currentTracks.currentTracks.map((track, index) => (
+          <TrackContext.Provider
+            options={{
+              input: {
+                track,
+                trackId: index,
+              },
+            }}
+          >
+            <Track actorRef={track.id} index={index} key={track.id} />
           </TrackContext.Provider>
         ))}
       </div>

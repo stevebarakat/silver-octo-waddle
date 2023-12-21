@@ -9,10 +9,14 @@ type TrackProps = {
 
 export const Track = ({ actorRef, index }: TrackProps) => {
   const { send } = TrackContext.useActorRef();
-  const { muted, volume } = TrackContext.useSelector((s) => s.context);
+  const { track } = TrackContext.useSelector((s) => s.context);
+  console.log("track", track.track.name);
+
+  const volume = 30;
+  const muted = false;
   return (
     <div className="track">
-      <h3 className="track-number">Track {index + 1}</h3>
+      <h3 className="track-number">{track.track.name}</h3>
       <button
         className={clsx({
           ["mute-button"]: true,

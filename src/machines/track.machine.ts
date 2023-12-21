@@ -8,7 +8,7 @@ export const trackMachine = createMachine(
     context: ({ input }) => ({
       id: input.id,
       muted: false,
-      track: input.track,
+      track: input,
       parent: input.parent,
       volume: INITIAL_TRACK_VOLUME,
     }),
