@@ -3,11 +3,12 @@ import { useMixer } from "../lib";
 import { MixerContext, TrackContext } from "../machines";
 
 export const Mixer = () => {
-  const { trackActorRefs, ...currentTracks } = MixerContext.useSelector(
+  const { trackActorRefs, currentTracks } = MixerContext.useSelector(
     (s) => s.context
   );
-  console.log("currentTracks", currentTracks.currentTracks);
-  const tracks = currentTracks.currentTracks;
+  console.log("currentTracks", currentTracks);
+  const song = currentTracks.sourceSong;
+  console.log("song", song);
   const { trackCount, send } = useMixer();
   return (
     <div className="mixer">
@@ -19,6 +20,7 @@ export const Mixer = () => {
       <div className="tracks">
         {currentTracks.currentTracks.map((track, index) => (
           <TrackContext.Provider
+            key={track.id}
             options={{
               input: {
                 track,
@@ -26,7 +28,7 @@ export const Mixer = () => {
               },
             }}
           >
-            <Track actorRef={track.id} index={index} key={track.id} />
+            <Track actorRef={track.id} index={index} />
           </TrackContext.Provider>
         ))}
       </div>

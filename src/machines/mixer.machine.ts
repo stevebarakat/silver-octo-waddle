@@ -6,8 +6,8 @@ import { roxanne } from "../assets/songs";
 export const mixerMachine = createMachine(
   {
     id: "mixer",
-    context: ({ input }) => ({
-      currentTracks: input,
+    context: ({ input: currentTracks }) => ({
+      currentTracks: currentTracks,
       trackActorRefs: [],
     }),
     initial: "initializing",

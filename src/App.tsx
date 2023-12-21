@@ -20,7 +20,7 @@ function App() {
         <h1>Audio mixer with XState v5</h1>
         <MixerContext.Provider
           options={{
-            input: currentTracks,
+            input: initialContext,
           }}
         >
           <Mixer />

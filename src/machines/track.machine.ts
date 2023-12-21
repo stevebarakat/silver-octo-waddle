@@ -51,8 +51,8 @@ export const trackMachine = createMachine(
       deleteTrack: ({ context }) =>
         context.parent.send({ type: "mixer.deleteTrack", id: context.id }),
       setVolume: assign(({ event }) => {
-        console.log("message");
         if (event.type !== "track.setVolume") throw new Error();
+        console.log("event.volume", event.volume);
         return {
           volume: event.volume,
         };
