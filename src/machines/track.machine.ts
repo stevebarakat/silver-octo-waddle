@@ -8,6 +8,7 @@ export const trackMachine = createMachine(
     context: ({ input }) => ({
       id: input.id,
       muted: false,
+      track: input.track,
       parent: input.parent,
       volume: INITIAL_TRACK_VOLUME,
     }),
@@ -31,6 +32,7 @@ export const trackMachine = createMachine(
       context: {
         id: string;
         muted: boolean;
+        track: any;
         parent: any; // TODO: What is the correct type here?
         volume: number;
       };
@@ -49,6 +51,7 @@ export const trackMachine = createMachine(
       deleteTrack: ({ context }) =>
         context.parent.send({ type: "mixer.deleteTrack", id: context.id }),
       setVolume: assign(({ event }) => {
+        console.log("message");
         if (event.type !== "track.setVolume") throw new Error();
         return {
           volume: event.volume,

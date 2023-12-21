@@ -57,6 +57,7 @@ export const mixerMachine = createMachine(
               input: {
                 id: `track${Date.now()}`, // TODO: This machine uses the current timestamp as a unique ID so it can be deleted later. Is there a better way?
                 parent: self,
+                track: context.track,
               },
             })
           ),

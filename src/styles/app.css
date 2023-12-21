@@ -108,6 +108,16 @@ button:focus-visible {
         font-size: 0.8em;
         width: 5rem;
       }
+      input[type="number"] {
+        width: 5ch;
+        background: none;
+        border: none;
+        font-size: 0.8em;
+        outline: none;
+        text-align: right;
+        display: flex;
+        justify-content: center;
+      }
       .volume-number {
         align-items: center;
         background-color: rgba(255, 255, 255, 0.1);
@@ -115,7 +125,7 @@ button:focus-visible {
         display: flex;
         flex-shrink: 0;
         justify-content: center;
-        width: 42px;
+        width: 5ch;
       }
       .volume-slider {
         width: 100%;

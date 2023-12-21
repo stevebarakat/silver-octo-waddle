@@ -1,5 +1,6 @@
 import { useTrack } from "../lib/use-track";
 import { clsx } from "clsx";
+import { TrackContext } from "../machines";
 
 type TrackProps = {
   actorRef: string;
@@ -7,7 +8,8 @@ type TrackProps = {
 };
 
 export const Track = ({ actorRef, index }: TrackProps) => {
-  const { muted, send, volume } = useTrack(actorRef);
+  const { send } = TrackContext.useActorRef();
+  const { muted, volume } = TrackContext.useSelector((s) => s.context);
   return (
     <div className="track">
       <h3 className="track-number">Track {index + 1}</h3>
@@ -26,7 +28,18 @@ export const Track = ({ actorRef, index }: TrackProps) => {
         <span className="sr-only">Mute track</span>
       </button>
       <div className="volume-number">
-        <span>{volume}</span>
+        <input
+          min={0}
+          max={100}
+          type="number"
+          onChange={(event) => {
+            send({
+              type: "track.setVolume",
+              volume: parseInt(event.target.value),
+            });
+          }}
+          value={volume}
+        />
       </div>
       <input
         className="volume-slider"
@@ -34,12 +47,13 @@ export const Track = ({ actorRef, index }: TrackProps) => {
         min="0"
         max="100"
         type="range"
-        onChange={(event) =>
+        value={volume}
+        onChange={(event) => {
           send({
             type: "track.setVolume",
             volume: parseInt(event.target.value),
-          })
-        }
+          });
+        }}
       />
       <button onClick={() => send({ type: "track.deleteTrack" })}>
         <span aria-hidden="true">X</span>

@@ -1,11 +1,13 @@
 import { Track } from ".";
 import { useMixer } from "../lib";
-import { MixerContext } from "../machines";
+import { MixerContext, TrackContext } from "../machines";
 
 export const Mixer = () => {
-  const { trackActorRefs, currentTracks } = MixerContext.useSelector(
+  const { trackActorRefs, ...currentTracks } = MixerContext.useSelector(
     (s) => s.context
   );
+  console.log("currentTracks", currentTracks.currentTracks);
+  const tracks = currentTracks.currentTracks;
   const { trackCount, send } = useMixer();
   return (
     <div className="mixer">
@@ -22,20 +24,19 @@ export const Mixer = () => {
       </div>
       <div className="tracks">
         {trackActorRefs.map((trackActorRef, index) => (
-          <Track
-            actorRef={trackActorRef.id}
-            index={index}
-            key={trackActorRef.id}
-          />
+          <TrackContext.Provider options={{ input: tracks }}>
+            <Track
+              actorRef={trackActorRef.id}
+              index={index}
+              key={trackActorRef.id}
+            />
+          </TrackContext.Provider>
         ))}
       </div>
       <pre
         style={{
           marginTop: "4rem",
           textAlign: "left",
-          background: "black",
-          overflowY: "scroll",
-          color: "hotpink",
         }}
       >
         {JSON.stringify(currentTracks, null, 4)}
