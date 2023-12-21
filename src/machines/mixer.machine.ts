@@ -1,6 +1,7 @@
 import { ActorRefFrom, assign, createMachine } from "xstate";
 import { createActorContext } from "@xstate/react";
 import { trackMachine } from "./track.machine";
+import { roxanne } from "../assets/songs";
 
 const INITIAL_NUMBER_OF_TRACKS = 8;
 const MAXIMUM_NUMBER_OF_TRACKS = 16;
@@ -10,7 +11,7 @@ export const mixerMachine = createMachine(
     /** @xstate-layout N4IgpgJg5mDOIC5QFsCWAPMAnAdKgdqgC6oCGANqgF4FQDEA2gAwC6ioADgPazGpf52IdIgBMADiY5xARlEBWJgBYl4pTICcTAOzyANCACeiAMwA2cThlMNq8QpOb5ogL4uDaTLlQRyYOp7YOKQQEAAqWKQAxgDWzGxIINy8JAJCIggm2ho48tqyoko6EmoyBsYIotomOEVmJkpmTGbaNhqu7iCB3r7+3ThRfqRYEdExsPFCyXxpiRlZMjhmdaLmMvby8mVGiDLa2rXyJqJMDTLySqIaMmZuHhhBPn4BD7gQYH5EYKOxk4nTqUEc1MrRwWjMhTUSg02hup3KiFkuSYKKa2nqumuSjcnXwXHe8ES3SmPBmQNAGQAtGYEQhqXcuq88IQSBRqLQSSl+OThIhLrSGjUmhojkxVtVrvIGf0nmBOWT0nzRKJchcLDITOZ5Ms1ALtEocCZ5LZxOJYWazNdtDiXEA */
     id: "mixer",
     context: ({ input }) => ({
-      sourceSong: input,
+      currentTracks: input,
       trackActorRefs: [],
     }),
     initial: "initializing",
@@ -65,9 +66,9 @@ export const mixerMachine = createMachine(
       }),
       createInitialTracks: assign({
         trackActorRefs: ({ self, spawn }) =>
-          [...Array(INITIAL_NUMBER_OF_TRACKS)].map((_, index) =>
+          roxanne.tracks.map((track, index) =>
             spawn(trackMachine, {
-              input: { id: `track${index}`, parent: self },
+              input: { id: `track${index}`, track, parent: self },
             })
           ),
       }),

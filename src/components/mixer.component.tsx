@@ -3,15 +3,12 @@ import { useMixer } from "../lib";
 import { MixerContext } from "../machines";
 
 export const Mixer = () => {
-  const { trackActorRefs, sourceSong } = MixerContext.useSelector(
+  const { trackActorRefs, currentTracks } = MixerContext.useSelector(
     (s) => s.context
   );
   const { trackCount, send } = useMixer();
   return (
     <div className="mixer">
-      <pre style={{ textAlign: "left" }}>
-        {JSON.stringify(sourceSong, null, 4)}
-      </pre>
       <div className="track-controls">
         <span className="track-count">
           {trackCount === 1 ? "1 track" : `${trackCount} tracks`}
@@ -32,6 +29,17 @@ export const Mixer = () => {
           />
         ))}
       </div>
+      <pre
+        style={{
+          marginTop: "4rem",
+          textAlign: "left",
+          background: "black",
+          overflowY: "scroll",
+          color: "hotpink",
+        }}
+      >
+        {JSON.stringify(currentTracks, null, 4)}
+      </pre>
     </div>
   );
 };
