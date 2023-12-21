@@ -6,16 +6,12 @@ export const Mixer = () => {
   const { trackActorRefs, currentTracks } = MixerContext.useSelector(
     (s) => s.context
   );
-  console.log("currentTracks", currentTracks);
   const song = currentTracks.sourceSong;
-  console.log("song", song);
   const { trackCount, send } = useMixer();
   return (
     <div className="mixer">
       <div className="track-controls">
-        <span className="track-count">
-          {trackCount === 1 ? "1 track" : `${trackCount} tracks`}
-        </span>
+        <h2>{`${song.artist}: ${song.title}`}</h2>
       </div>
       <div className="tracks">
         {currentTracks.currentTracks.map((track, index) => (
