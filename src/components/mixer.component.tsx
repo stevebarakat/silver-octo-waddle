@@ -15,12 +15,6 @@ export const Mixer = () => {
         <span className="track-count">
           {trackCount === 1 ? "1 track" : `${trackCount} tracks`}
         </span>
-        <button onClick={() => send({ type: "mixer.addTrack" })}>
-          Add a track
-        </button>
-        <button onClick={() => send({ type: "mixer.clearTracks" })}>
-          Clear tracks
-        </button>
       </div>
       <div className="tracks">
         {currentTracks.currentTracks.map((track, index) => (
