@@ -8,19 +8,21 @@ export const Mixer = () => {
   return (
     <div className="mixer">
       <div className="tracks">
-        {currentTracks.currentTracks.map((track, index) => (
-          <TrackContext.Provider
-            key={track.id}
-            options={{
-              input: {
-                track,
-                trackId: index,
-              },
-            }}
-          >
-            <Track actorRef={track.id} index={index} />
-          </TrackContext.Provider>
-        ))}
+        {currentTracks.currentTracks.map(
+          (track: TrackSettings, index: number) => (
+            <TrackContext.Provider
+              key={track.id}
+              options={{
+                input: {
+                  track,
+                  trackId: index,
+                },
+              }}
+            >
+              <Track index={index} />
+            </TrackContext.Provider>
+          )
+        )}
       </div>
       <div className="track-controls">
         <h2>{`${song.artist}: ${song.title}`}</h2>

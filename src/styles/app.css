@@ -143,7 +143,7 @@ input[type="checkbox"]:checked + label {
           opacity: 1;
         }
       }
-      .track-number {
+      .track-label {
         justify-content: start;
         display: flex;
         flex-shrink: 0;

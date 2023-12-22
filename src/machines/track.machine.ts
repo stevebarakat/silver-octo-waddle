@@ -1,7 +1,7 @@
 import { createActorContext } from "@xstate/react";
 import { ActorRefFrom, assign, createMachine } from "xstate";
 
-const INITIAL_TRACK_VOLUME = 20;
+// const INITIAL_TRACK_VOLUME = 20;
 export const trackMachine = createMachine(
   {
     id: "track",
@@ -10,8 +10,7 @@ export const trackMachine = createMachine(
       muted: false,
       soloed: false,
       track: input,
-      parent: input.parent,
-      volume: INITIAL_TRACK_VOLUME,
+      volume: input.volume,
     }),
     initial: "idle",
     states: {
@@ -21,7 +20,7 @@ export const trackMachine = createMachine(
             actions: ["setVolume"],
           },
           "track.toggleSoloed": {
-            actions: ["deleteTrack"],
+            actions: ["toggleSoloed"],
           },
           "track.toggleMuted": {
             actions: ["toggleMuted"],
@@ -34,17 +33,15 @@ export const trackMachine = createMachine(
         id: string;
         muted: boolean;
         soloed: boolean;
-        track: any;
-        parent: any; // TODO: What is the correct type here?
+        track: TrackSettings;
         volume: number;
       };
       events:
         | { type: "track.setVolume"; volume: number }
-        | { type: "track.toggleSoloed" }
-        | { type: "track.toggleMuted" };
+        | { type: "track.toggleSoloed"; checked: boolean }
+        | { type: "track.toggleMuted"; checked: boolean };
       input: {
         id: string;
-        parent: ActorRefFrom<any>; // TODO: What is the correct type here?
       };
     },
   },

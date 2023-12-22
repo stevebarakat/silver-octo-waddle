@@ -94,8 +94,8 @@ export const mixerMachine = createMachine(
   {
     actions: {
       initializeMixer: assign({
-        trackActorRefs: ({ self, spawn }) =>
-          roxanne.tracks.map((track, index) =>
+        trackActorRefs: ({ context, self, spawn }) =>
+          context.currentTracks.map((track, index) =>
             spawn(trackMachine, {
               input: { id: `track${index}`, track, parent: self },
             })

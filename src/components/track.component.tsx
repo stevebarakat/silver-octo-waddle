@@ -1,7 +1,6 @@
 import { TrackContext } from "../machines";
 
 type TrackProps = {
-  actorRef: string;
   index: number;
 };
 
@@ -9,10 +8,9 @@ export const Track = ({ index }: TrackProps) => {
   const { send } = TrackContext.useActorRef();
   const { track, volume } = TrackContext.useSelector((s) => s.context);
 
-  // const volume = 30;
   return (
     <div className="track">
-      <h3 className="track-number">{track.track.name}</h3>
+      <h3 className="track-label">{track.track.name}</h3>
       <div className="toggle">
         <input
           type="checkbox"
@@ -54,8 +52,8 @@ export const Track = ({ index }: TrackProps) => {
       </div>
       <input
         className="volume-slider"
-        min="0"
-        max="100"
+        min={0}
+        max={100}
         type="range"
         value={volume}
         onChange={(e) => {
