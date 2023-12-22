@@ -8,6 +8,7 @@ export const trackMachine = createMachine(
     context: ({ input }) => ({
       id: input.id,
       muted: false,
+      soloed: false,
       track: input,
       parent: input.parent,
       volume: INITIAL_TRACK_VOLUME,
@@ -16,11 +17,11 @@ export const trackMachine = createMachine(
     states: {
       idle: {
         on: {
-          "track.deleteTrack": {
-            actions: ["deleteTrack"],
-          },
           "track.setVolume": {
             actions: ["setVolume"],
+          },
+          "track.toggleSoloed": {
+            actions: ["deleteTrack"],
           },
           "track.toggleMuted": {
             actions: ["toggleMuted"],
@@ -32,13 +33,14 @@ export const trackMachine = createMachine(
       context: {
         id: string;
         muted: boolean;
+        soloed: boolean;
         track: any;
         parent: any; // TODO: What is the correct type here?
         volume: number;
       };
       events:
-        | { type: "track.deleteTrack" }
         | { type: "track.setVolume"; volume: number }
+        | { type: "track.toggleSoloed" }
         | { type: "track.toggleMuted" };
       input: {
         id: string;
@@ -48,13 +50,17 @@ export const trackMachine = createMachine(
   },
   {
     actions: {
-      deleteTrack: ({ context }) =>
-        context.parent.send({ type: "mixer.deleteTrack", id: context.id }),
       setVolume: assign(({ event }) => {
         if (event.type !== "track.setVolume") throw new Error();
         console.log("event.volume", event.volume);
         return {
           volume: event.volume,
+        };
+      }),
+      toggleSoloed: assign(({ context, event }) => {
+        if (event.type !== "track.toggleSoloed") throw new Error();
+        return {
+          soloed: !context.soloed,
         };
       }),
       toggleMuted: assign(({ context, event }) => {
