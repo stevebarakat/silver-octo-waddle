@@ -10,6 +10,11 @@
   border: none;
 }
 
+input::-webkit-inner-spin-button {
+  cursor: pointer;
+  scale: 1.2;
+}
+
 .transport-button {
   background: #3a3a3a;
   position: relative;
