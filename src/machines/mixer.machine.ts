@@ -6,7 +6,7 @@ import { loaded } from "tone";
 
 export const mixerMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QFsCWAPMAnAdKiANmAMQQD2AdmHhQG5kDW1MALi6hVDlmAIYQBPANoAGALqJQABzKxU7SpJDpEAWgCMANgCcOAOwAWTSO0BmPQFYANCAGIjInNpEAmABzqXFgL7ebaTFx8ImJsLDJcKQJeFgAzCOQcVnZObj5BUQkkEBk5BQolFQRVM30PLxs7BEd1PRdTA3MDbRbW4xdffwxsNP4BYljeWBYAMQB3CEylXPlURWyio1MnWu1NN0tKxBc9TRwLN00DEU0vTpAAnp4+4h4xjknxadlZ+dAi01MXfRE9EVNPNZbNtdvtDsdTj4-BdurhroJiLAwCwACpYXgAYwYADUyAQAK7IMBTbIzfKFNSaCw4UwWdQWSFbBA7PYHI4nM7Qy5w9L9JGo9FYgDKeLIAFl8SxiU9SS9yQtEKZdNp1BCKsCELU3PsDHoGk1Wi03Odub0Efy0ZiGAAFXgUEnSOVzAoKzUMnBGDZAqossHsyEm2FmgQ4YZkKRSSDEKK8YQyx15Z0U5luZaWPTlb2ICx-fYdLlB+EhsMRqM8fkOnJOt7KezuJwWAHqqoWf44NzaKFdQLBnAxgQcKC3ODIytkpOu7TawwudRepmaJU0zxrL2BntFvvRAecaO8fFIsfVl3vbYWb4WMybDWL3RN1eWXzQihkCBwJTc56JmtFVSzvT6A4V5ZsUGw0iyDKct2PTBGAX6vCetbMo0OC-P8gJMtqU4mAahpTvm0E8n08HyqeCC6qh9KMhqBieDgVLuIC65XLyoYsOGkYQCRE5kZ2lGQSBrY1OembMURghbrGg7cT+9jqGmjbONRVSnLozQuFSAZPkAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QFsCWAPMAnAdKiANmAMQQD2AdmHhQG5kDW1MALi6hVDlmAIYQBPANoAGALqJQABzKxU7SpJDpEAWgAsARgCsOAJwB2AEwA2bSaPaANCAFrNZnEZGnzlkR49GAvt5tpMXHwiYmwsMlwpAl4WADMI5BxWdk5uPkFRCSQQGTkFCiUVBFUHPRwRA3UjTQAOA2tbezr9Iz1quu1PL19-DGw0-gFiWN5YFgAxAHcITKVc+VRFbKKAZj1NHFqV7T0V+ps7Ytqyqrba+q6XHpAA-p5B4h5JjhnxOdkFpdAihxEcAzMFgahxKNROrXaFy6Pj8Nz6uHughwYzIUikkGIUV4wje2Xm+UK9j0NScriBB0QtRMm3MBnO6j0jMZNWutwR6QEyJYqPREEecDALFmeI+BOWanUKz+dTBInJjQQkvKJhMdQZTKZLNhbIGSKxAg4UH5sEFwukosWBXFxW2Bhw6mMgMsFIQRjBm0s6lV9VZ8N1nP1hsxvAAriazTkLV9lJScNptDUdntgYg3WVNJ7vdpfLCKGQIHAlGz3nlLYTitpTDgZXo5c6FRoKjTtAYahns9q-cEwCXPlbvhLanHNHptCt2y7VOOymYW23LL7Av7e2KB8UHSSa3WU+v1PaVuP3Jcrp2l4jOSi0ZAV2XrVPDP8qucd1SaSY6WqNcTF3cOThA5wN7RqsugiIYTovhYOCAh+lRflqvhAA */
     id: "mixer",
     context: ({ input: currentTracks }) => ({
       currentTracks: currentTracks,
@@ -18,7 +18,7 @@ export const mixerMachine = createMachine(
         invoke: {
           src: "loaderActor",
           id: "getting.ready",
-          onDone: "ready.stopped",
+          onDone: "ready",
           onError: [
             {
               target: "idle",
@@ -75,24 +75,6 @@ export const mixerMachine = createMachine(
             guard: "canRew",
             actions: {
               type: "rewind",
-            },
-          },
-
-          setTrackVolume: {
-            actions: {
-              type: "setTrackVolume",
-            },
-          },
-
-          setTrackSoloMute: {
-            actions: {
-              type: "setTrackSoloMute",
-            },
-          },
-
-          setTrackPan: {
-            actions: {
-              type: "setTrackPan",
             },
           },
         },

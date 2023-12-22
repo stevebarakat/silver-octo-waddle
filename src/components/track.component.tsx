@@ -1,6 +1,7 @@
 import { useTrack } from "../lib/use-track";
 import { clsx } from "clsx";
 import { TrackContext } from "../machines";
+import { Toggle } from "./Buttons";
 
 type TrackProps = {
   actorRef: string;
@@ -32,20 +33,13 @@ export const Track = ({ actorRef, index }: TrackProps) => {
         <span aria-hidden="true">S</span>
         <span className="sr-only">Solo track</span>
       </button>
-      <button
-        className={clsx({
-          ["mute-button"]: true,
-          muted: muted,
-          unmuted: !muted,
-        })}
-        onClick={(event) => {
-          send({ type: "track.toggleMuted" });
-          event.currentTarget.blur();
+      <input
+        type="checkbox"
+        onClick={(e) => {
+          send({ type: "track.toggleMuted", checked: e.currentTarget.checked });
         }}
-      >
-        <span aria-hidden="true">M</span>
-        <span className="sr-only">Mute track</span>
-      </button>
+      />
+      <label>M</label>
 
       <div className="volume-number">
         <input
