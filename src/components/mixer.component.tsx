@@ -1,13 +1,9 @@
 import { Track } from ".";
-import { useMixer } from "../lib";
 import { MixerContext, TrackContext } from "../machines";
 
 export const Mixer = () => {
-  const { trackActorRefs, currentTracks } = MixerContext.useSelector(
-    (s) => s.context
-  );
+  const { currentTracks } = MixerContext.useSelector((s) => s.context);
   const song = currentTracks.sourceSong;
-  const { trackCount, send } = useMixer();
   return (
     <div className="mixer">
       <div className="track-controls">
