@@ -1,10 +1,6 @@
 import { TrackContext } from "../machines";
 
-type TrackProps = {
-  index: number;
-};
-
-export const Track = ({ index }: TrackProps) => {
+export const Track = () => {
   const { send } = TrackContext.useActorRef();
   const { track, volume } = TrackContext.useSelector((s) => s.context);
 
@@ -16,7 +12,7 @@ export const Track = ({ index }: TrackProps) => {
           type="checkbox"
           onClick={(e) => {
             send({
-              type: "track.toggleSoloed",
+              type: "track.toggleSolo",
               checked: e.currentTarget.checked,
             });
           }}
@@ -28,7 +24,7 @@ export const Track = ({ index }: TrackProps) => {
           type="checkbox"
           onClick={(e) => {
             send({
-              type: "track.toggleMuted",
+              type: "track.toggleMute",
               checked: e.currentTarget.checked,
             });
           }}
@@ -47,7 +43,7 @@ export const Track = ({ index }: TrackProps) => {
               volume: parseInt(e.target.value),
             });
           }}
-          value={volume}
+          value={volume ?? 50}
         />
       </div>
       <input

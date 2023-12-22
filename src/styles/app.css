@@ -152,10 +152,11 @@ input[type="checkbox"]:checked + label {
       }
       input[type="number"] {
         width: 5ch;
+        aspect-ratio: 1/1;
         background: none;
         border: none;
         font-size: 0.8em;
-        outline: none;
+        outline-offset: 0.25rem;
         text-align: right;
         display: flex;
         justify-content: center;

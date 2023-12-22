@@ -13,7 +13,6 @@ const audio = getAudioContext();
 
 export const mixerMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QFsCWAPMAnAdKiANmAMQQD2AdmHhQG5kDW1MALi6hVDlmAIYQBPANoAGALqJQABzKxU7SpJDpEAWgAsARgCsOAJwB2AEwA2bSaPaANCAFrNZnEZGnzlkR49GAvt5tpMXHwiYmwsMlwpAl4WADMI5BxWdk5uPkFRCSQQGTkFCiUVBFUHPRwRA3UjTQAOA2tbezr9Iz1quu1PL19-DGw0-gFiWN5YFgAxAHcITKVc+VRFbKKAZj1NHFqV7T0V+ps7Ytqyqrba+q6XHpAA-p5B4h5JjhnxOdkFpdAihxEcAzMFgahxKNROrXaFy6Pj8Nz6uHughwYzIUikkGIUV4wje2Xm+UK9j0NScriBB0QtRMm3MBnO6j0jMZNWutwR6QEyJYqPREEecDALFmeI+BOWanUKz+dTBInJjQQkvKJhMdQZTKZLNhbIGSKxAg4UH5sEFwukosWBXFxW2Bhw6mMgMsFIQRjBm0s6lV9VZ8N1nP1hsxvAAriazTkLV9lJScNptDUdntgYg3WVNJ7vdpfLCKGQIHAlGz3nlLYTitpTDgZXo5c6FRoKjTtAYahns9q-cEwCXPlbvhLanHNHptCt2y7VOOymYW23LL7Av7e2KB8UHSSa3WU+v1PaVuP3Jcrp2l4jOSi0ZAV2XrVPDP8qucd1SaSY6WqNcTF3cOThA5wN7RqsugiIYTovhYOCAh+lRflqvhAA */
     id: "mixer",
     context: ({ input: currentTracks }) => ({
       currentTracks: currentTracks,

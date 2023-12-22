@@ -1,4 +1,5 @@
 import { createActorContext } from "@xstate/react";
+import { Channel, Player } from "tone";
 import { ActorRefFrom, assign, createMachine } from "xstate";
 
 // const INITIAL_TRACK_VOLUME = 20;
@@ -12,18 +13,21 @@ export const trackMachine = createMachine(
       track: input,
       volume: input.volume,
     }),
-    initial: "idle",
+    initial: "ready",
     states: {
-      idle: {
+      ready: {
+        entry: {
+          type: "initializeTrack",
+        },
         on: {
           "track.setVolume": {
             actions: ["setVolume"],
           },
-          "track.toggleSoloed": {
-            actions: ["toggleSoloed"],
+          "track.toggleSolo": {
+            actions: ["toggleSolo"],
           },
-          "track.toggleMuted": {
-            actions: ["toggleMuted"],
+          "track.toggleMute": {
+            actions: ["toggleMute"],
           },
         },
       },
@@ -38,8 +42,8 @@ export const trackMachine = createMachine(
       };
       events:
         | { type: "track.setVolume"; volume: number }
-        | { type: "track.toggleSoloed"; checked: boolean }
-        | { type: "track.toggleMuted"; checked: boolean };
+        | { type: "track.toggleSolo"; checked: boolean }
+        | { type: "track.toggleMute"; checked: boolean };
       input: {
         id: string;
       };
@@ -47,21 +51,25 @@ export const trackMachine = createMachine(
   },
   {
     actions: {
+      initializeTrack: ({ context }) => {
+        const player = new Player(context.track.track.path).sync().start();
+        const channel = new Channel().toDestination();
+        player.connect(channel);
+      },
       setVolume: assign(({ event }) => {
         if (event.type !== "track.setVolume") throw new Error();
-        console.log("event.volume", event.volume);
         return {
           volume: event.volume,
         };
       }),
-      toggleSoloed: assign(({ context, event }) => {
-        if (event.type !== "track.toggleSoloed") throw new Error();
+      toggleSolo: assign(({ context, event }) => {
+        if (event.type !== "track.toggleSolo") throw new Error();
         return {
           soloed: !context.soloed,
         };
       }),
-      toggleMuted: assign(({ context, event }) => {
-        if (event.type !== "track.toggleMuted") throw new Error();
+      toggleMute: assign(({ context, event }) => {
+        if (event.type !== "track.toggleMute") throw new Error();
         return {
           muted: !context.muted,
         };

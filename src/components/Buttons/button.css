@@ -48,11 +48,16 @@
   padding-bottom: 8px;
 }
 
+.toggle input[type="checkbox"]:focus ~ label {
+  outline-offset: 0.25rem;
+  border: 2px hotpink solid;
+}
 .solo-mute label {
+  border-radius: 2px;
   width: 27px;
   border: 3px solid transparent;
   padding: 0.1rem;
-  border-radius: 100%;
+  /* border-radius: 100%; */
   user-select: none;
   cursor: pointer;
   font-weight: 900;

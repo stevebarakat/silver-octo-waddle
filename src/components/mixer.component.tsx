@@ -19,7 +19,7 @@ export const Mixer = () => {
                 },
               }}
             >
-              <Track index={index} />
+              <Track track={track} trackId={index} />
             </TrackContext.Provider>
           )
         )}
