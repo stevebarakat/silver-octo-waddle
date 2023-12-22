@@ -11,8 +11,7 @@
 }
 
 .transport-button {
-  background: ivory;
-  color: var(--primary-color);
+  background: #3a3a3a;
   position: relative;
   display: flex;
   padding: 1.025em;
@@ -57,37 +56,24 @@
   user-select: none;
   cursor: pointer;
   font-weight: 900;
-  background: ivory;
+  background: black;
   color: var(--primary-color);
   transition: all 0.2s;
 }
 
 .channel input[type="checkbox"]:checked + label {
   background: var(--primary-color);
-  color: ivory;
+  color: black;
   /* padding: 2px 5px; */
   border-radius: 100%;
   height: min-content;
   /* width: 24px; */
 }
 
-/* .solo input[type="checkbox"] + label:after {
-  content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2YjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jb3JuZXItcmlnaHQtdXAiPjxwb2x5bGluZSBwb2ludHM9IjEwIDkgMTUgNCAyMCA5Ii8+PHBhdGggZD0iTTQgMjBoN2E0IDQgMCAwIDAgNC00VjQiLz48L3N2Zz4=");
-  color: var(--primary-color);
-} */
-
-.toggle {
-  position: absolute;
-  appearance: none;
-  left: -1000px;
-  width: 0;
-  height: 0;
-}
-
 .channels input[type="radio"]:checked + label svg,
 .fx-panel input[type="radio"]:checked + label svg {
   background: var(--primary-color);
-  color: ivory;
+  color: black;
   transition: all 0.2s;
   border-radius: 100%;
   padding: 0;

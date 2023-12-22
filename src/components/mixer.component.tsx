@@ -1,4 +1,5 @@
 import { Track } from ".";
+import Transport from "./Transport";
 import { MixerContext, TrackContext } from "../machines";
 
 export const Mixer = () => {
@@ -6,9 +7,6 @@ export const Mixer = () => {
   const song = currentTracks.sourceSong;
   return (
     <div className="mixer">
-      <div className="track-controls">
-        <h2>{`${song.artist}: ${song.title}`}</h2>
-      </div>
       <div className="tracks">
         {currentTracks.currentTracks.map((track, index) => (
           <TrackContext.Provider
@@ -23,6 +21,10 @@ export const Mixer = () => {
             <Track actorRef={track.id} index={index} />
           </TrackContext.Provider>
         ))}
+      </div>
+      <div className="track-controls">
+        <h2>{`${song.artist}: ${song.title}`}</h2>
+        <Transport song={song} />
       </div>
       <pre
         style={{

@@ -1,24 +1,19 @@
-import { useTrack } from "../lib/use-track";
-import { clsx } from "clsx";
 import { TrackContext } from "../machines";
-import { Toggle } from "./Buttons";
 
 type TrackProps = {
   actorRef: string;
   index: number;
 };
 
-export const Track = ({ actorRef, index }: TrackProps) => {
+export const Track = ({ index }: TrackProps) => {
   const { send } = TrackContext.useActorRef();
   const { track, volume } = TrackContext.useSelector((s) => s.context);
-  console.log("track", track.track.name);
 
   // const volume = 30;
   return (
     <div className="track">
       <h3 className="track-number">{track.track.name}</h3>
       <div className="toggle">
-        {" "}
         <input
           type="checkbox"
           onClick={(e) => {
@@ -48,10 +43,10 @@ export const Track = ({ actorRef, index }: TrackProps) => {
           min={0}
           max={100}
           type="number"
-          onChange={(event) => {
+          onChange={(e) => {
             send({
               type: "track.setVolume",
-              volume: parseInt(event.target.value),
+              volume: parseInt(e.target.value),
             });
           }}
           value={volume}
@@ -59,15 +54,14 @@ export const Track = ({ actorRef, index }: TrackProps) => {
       </div>
       <input
         className="volume-slider"
-        // defaultValue={volume}
         min="0"
         max="100"
         type="range"
         value={volume}
-        onChange={(event) => {
+        onChange={(e) => {
           send({
             type: "track.setVolume",
-            volume: parseInt(event.target.value),
+            volume: parseInt(e.target.value),
           });
         }}
       />

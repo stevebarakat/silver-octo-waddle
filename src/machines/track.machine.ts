@@ -58,7 +58,6 @@ export const trackMachine = createMachine(
         };
       }),
       toggleMuted: assign(({ context, event }) => {
-        console.log("event.checked", event.checked);
         if (event.type !== "track.toggleMuted") throw new Error();
         return {
           muted: !context.muted,
