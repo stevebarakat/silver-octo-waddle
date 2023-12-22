@@ -1,13 +1,20 @@
-import { ActorRefFrom, assign, createMachine, fromPromise } from "xstate";
+import {
+  ActorRefFrom,
+  assign,
+  createMachine,
+  fromObservable,
+  fromPromise,
+} from "xstate";
 import { createActorContext } from "@xstate/react";
 import { trackMachine } from "./track.machine";
-import { roxanne } from "../assets/songs";
+import { interval, animationFrameScheduler } from "rxjs";
 import { loaded } from "tone";
 import {
   start as initializeAudio,
   getContext as getAudioContext,
   Transport as t,
 } from "tone";
+import { formatMilliseconds } from "@/utils";
 
 const audio = getAudioContext();
 
@@ -15,6 +22,7 @@ export const mixerMachine = createMachine(
   {
     id: "mixer",
     context: ({ input: currentTracks }) => ({
+      currentTime: "00:00:00",
       currentTracks: currentTracks,
       trackActorRefs: [],
     }),
@@ -34,6 +42,17 @@ export const mixerMachine = createMachine(
         },
       },
       ready: {
+        invoke: {
+          src: "tickerActor",
+          id: "start.ticker",
+          onSnapshot: {
+            actions: assign(() => {
+              const currentTime = formatMilliseconds(t.seconds);
+              console.log("currentTime", currentTime);
+              return { currentTime };
+            }),
+          },
+        },
         initial: "stopped",
         states: {
           stopped: {
@@ -94,7 +113,7 @@ export const mixerMachine = createMachine(
     actions: {
       initializeMixer: assign({
         trackActorRefs: ({ context, self, spawn }) =>
-          context.currentTracks.map((track, index) =>
+          context.currentTracks.currentTracks.map((track, index) =>
             spawn(trackMachine, {
               input: { id: `track${index}`, track, parent: self },
             })
@@ -122,6 +141,7 @@ export const mixerMachine = createMachine(
     },
     actors: {
       loaderActor: fromPromise(async () => await loaded()),
+      tickerActor: fromObservable(() => interval(0, animationFrameScheduler)),
     },
     guards: {},
   }
