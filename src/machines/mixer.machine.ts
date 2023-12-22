@@ -3,6 +3,13 @@ import { createActorContext } from "@xstate/react";
 import { trackMachine } from "./track.machine";
 import { roxanne } from "../assets/songs";
 import { loaded } from "tone";
+import {
+  start as initializeAudio,
+  getContext as getAudioContext,
+  Transport as t,
+} from "tone";
+
+const audio = getAudioContext();
 
 export const mixerMachine = createMachine(
   {
@@ -65,14 +72,12 @@ export const mixerMachine = createMachine(
         },
         on: {
           fastFwd: {
-            guard: "canFF",
             actions: {
               type: "fastFwd",
             },
           },
 
           rewind: {
-            guard: "canRew",
             actions: {
               type: "rewind",
             },
@@ -96,6 +101,25 @@ export const mixerMachine = createMachine(
             })
           ),
       }),
+      play: () => {
+        if (audio.state === "suspended") {
+          initializeAudio();
+          return t.start();
+        } else {
+          return t.start();
+        }
+      },
+      pause: () => t.pause(),
+      reset: () => {
+        t.stop();
+        t.seconds = 0;
+      },
+      fastFwd: () => {
+        t.seconds = t.seconds + 10;
+      },
+      rewind: () => {
+        t.seconds = t.seconds - 10;
+      },
     },
     actors: {
       loaderActor: fromPromise(async () => await loaded()),

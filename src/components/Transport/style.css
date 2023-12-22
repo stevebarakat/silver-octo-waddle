@@ -17,6 +17,7 @@
 }
 
 .ghost {
+  opacity: 0;
   position: absolute;
   color: var(--primary-color-1);
   z-index: 1;
