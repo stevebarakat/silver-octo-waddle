@@ -2,7 +2,7 @@ import { TrackContext } from "../machines";
 
 export const Track = () => {
   const { send } = TrackContext.useActorRef();
-  const { track, volume } = TrackContext.useSelector((s) => s.context);
+  const { track, volume, channel } = TrackContext.useSelector((s) => s.context);
 
   return (
     <div className="track">
@@ -34,8 +34,8 @@ export const Track = () => {
 
       <div className="volume-number">
         <input
-          min={0}
-          max={100}
+          min={-100}
+          max={0}
           type="number"
           onChange={(e) => {
             send({
@@ -43,19 +43,23 @@ export const Track = () => {
               volume: parseInt(e.target.value),
             });
           }}
-          value={volume ?? 50}
+          value={volume ?? -32}
         />
       </div>
       <input
         className="volume-slider"
-        min={0}
-        max={100}
+        min={-100}
+        max={12}
+        step={0.1}
         type="range"
-        value={volume}
+        value={volume ?? -32}
         onChange={(e) => {
+          const volume = parseFloat(e.currentTarget.value);
+          console.log("channel", channel);
+          channel.volume.value = volume;
           send({
             type: "track.setVolume",
-            volume: parseInt(e.target.value),
+            volume,
           });
         }}
       />

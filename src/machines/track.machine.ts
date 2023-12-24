@@ -1,8 +1,7 @@
 import { createActorContext } from "@xstate/react";
 import { Channel, Player } from "tone";
-import { ActorRefFrom, assign, createMachine } from "xstate";
+import { assign, createMachine } from "xstate";
 
-// const INITIAL_TRACK_VOLUME = 20;
 export const trackMachine = createMachine(
   {
     id: "track",
@@ -12,6 +11,7 @@ export const trackMachine = createMachine(
       soloed: false,
       track: input,
       volume: input.volume,
+      channel: new Channel(),
     }),
     initial: "ready",
     states: {
@@ -39,6 +39,7 @@ export const trackMachine = createMachine(
         soloed: boolean;
         track: TrackSettings;
         volume: number;
+        channel: Channel;
       };
       events:
         | { type: "track.setVolume"; volume: number }
@@ -53,11 +54,13 @@ export const trackMachine = createMachine(
     actions: {
       initializeTrack: ({ context }) => {
         const player = new Player(context.track.track.path).sync().start();
-        const channel = new Channel().toDestination();
+        const channel = context.channel.toDestination();
         player.connect(channel);
+        return { channel };
       },
       setVolume: assign(({ event }) => {
         if (event.type !== "track.setVolume") throw new Error();
+        console.log("event.volume", event.volume);
         return {
           volume: event.volume,
         };

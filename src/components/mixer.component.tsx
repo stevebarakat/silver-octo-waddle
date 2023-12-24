@@ -28,14 +28,6 @@ export const Mixer = () => {
         <h2>{`${song.artist}: ${song.title}`}</h2>
         <Transport song={song} />
       </div>
-      <pre
-        style={{
-          marginTop: "4rem",
-          textAlign: "left",
-        }}
-      >
-        {JSON.stringify(currentTracks, null, 4)}
-      </pre>
     </div>
   );
 };

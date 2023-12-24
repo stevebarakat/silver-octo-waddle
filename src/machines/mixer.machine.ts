@@ -18,12 +18,17 @@ import { formatMilliseconds } from "@/utils";
 
 const audio = getAudioContext();
 
+export type MixerMachineEvents =
+  | { type: "mixer.addTrack" }
+  | { type: "mixer.clearTracks" }
+  | { type: "mixer.deleteTrack"; id: string };
+
 export const mixerMachine = createMachine(
   {
     id: "mixer",
     context: ({ input: currentTracks }) => ({
       currentTime: "00:00:00",
-      currentTracks: currentTracks,
+      currentTracks,
       trackActorRefs: [],
     }),
     initial: "idle",
@@ -48,7 +53,6 @@ export const mixerMachine = createMachine(
           onSnapshot: {
             actions: assign(() => {
               const currentTime = formatMilliseconds(t.seconds);
-              console.log("currentTime", currentTime);
               return { currentTime };
             }),
           },
@@ -107,15 +111,16 @@ export const mixerMachine = createMachine(
       context: {
         trackActorRefs: ActorRefFrom<typeof trackMachine>[];
       };
+      events: MixerMachineEvents;
     },
   },
   {
     actions: {
       initializeMixer: assign({
-        trackActorRefs: ({ context, self, spawn }) =>
-          context.currentTracks.currentTracks.map((track, index) =>
+        trackRefs: ({ context, self, spawn }) =>
+          context.currentTracks.map((_, index) =>
             spawn(trackMachine, {
-              input: { id: `track${index}`, track, parent: self },
+              input: { id: `track${index}`, parent: self },
             })
           ),
       }),

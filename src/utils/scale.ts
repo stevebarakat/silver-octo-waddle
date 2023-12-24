@@ -13,9 +13,9 @@ export const scale = function (
 };
 
 // make scale logarithmic
-export const log = (value: number) => Math.log(value + 101) / Math.log(101);
+export const log = (value: number) => Math.log(value + 101) / Math.log(113);
 
 // convert decibels to a percentage
 export const dbToPercent = function (dB: number) {
-  return scale(dB, 0, 1, -100, 0);
+  return scale(dB, 0, 1, -100, 12);
 };
