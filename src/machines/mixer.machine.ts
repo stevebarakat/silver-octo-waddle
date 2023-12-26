@@ -27,7 +27,6 @@ export const mixerMachine = createMachine(
   {
     id: "mixer",
     context: ({ input: initialContext }) => ({
-      currentTime: "00:00:00",
       initialContext,
     }),
     initial: "idle",

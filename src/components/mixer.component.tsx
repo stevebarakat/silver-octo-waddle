@@ -1,15 +1,20 @@
 import { Track } from ".";
 import Transport from "./Transport";
 import { MixerContext, TrackContext } from "../machines";
+import { Loader } from "lucide-react";
 
 export const Mixer = () => {
-  const { initialContext } = MixerContext.useSelector((s) => s.context);
-  const song = initialContext.sourceSong;
-  return (
-    <div className="mixer">
-      <div className="tracks">
-        {initialContext.currentTracks.map(
-          (track: TrackSettings, index: number) => (
+  const state = MixerContext.useSelector((state) => state);
+  const ready = state.matches("ready");
+  const song = state.context.initialContext.sourceSong;
+  const currentTracks = state.context.initialContext.currentTracks;
+
+  console.log("state", state);
+  if (ready) {
+    return (
+      <div className="mixer">
+        <div className="tracks">
+          {currentTracks.map((track: TrackSettings, index: number) => (
             <TrackContext.Provider
               key={track.id}
               options={{
@@ -21,13 +26,15 @@ export const Mixer = () => {
             >
               <Track track={track} trackId={index} />
             </TrackContext.Provider>
-          )
-        )}
+          ))}
+        </div>
+        <div className="track-controls">
+          <h2>{`${song.artist}: ${song.title}`}</h2>
+          <Transport song={song} />
+        </div>
       </div>
-      <div className="track-controls">
-        <h2>{`${song.artist}: ${song.title}`}</h2>
-        <Transport song={song} />
-      </div>
-    </div>
-  );
+    );
+  } else {
+    return <Loader />;
+  }
 };
