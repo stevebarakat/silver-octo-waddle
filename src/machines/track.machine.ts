@@ -12,6 +12,7 @@ export const trackMachine = createMachine(
       soloed: false,
       track: input,
       volume: input.volume ?? -32,
+      channel: new Channel(),
     }),
     initial: "ready",
     states: {
@@ -54,7 +55,7 @@ export const trackMachine = createMachine(
     actions: {
       initializeTrack: ({ context }) => {
         const player = new Player(context.track.track.path).sync().start();
-        const channel = new Channel().toDestination();
+        const channel = context.channel.toDestination();
         player.connect(channel);
         return { channel };
       },
