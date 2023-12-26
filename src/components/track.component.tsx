@@ -55,10 +55,11 @@ export const Track = () => {
         value={volume ?? -32}
         onChange={(e) => {
           const volume = parseFloat(e.currentTarget.value);
-          console.log("channel", channel);
-          channel.volume.value = volume;
+          // console.log("channel", channel);
+          // channel.volume.value = volume;
           send({
             type: "track.setVolume",
+            channel,
             volume,
           });
         }}

@@ -1,3 +1,4 @@
+import { dbToPercent, log } from "@/utils";
 import { createActorContext } from "@xstate/react";
 import { Channel, Player } from "tone";
 import { assign, createMachine } from "xstate";
@@ -42,7 +43,7 @@ export const trackMachine = createMachine(
         channel: Channel;
       };
       events:
-        | { type: "track.setVolume"; volume: number }
+        | { type: "track.setVolume"; volume: number; channel: Channel }
         | { type: "track.toggleSolo"; checked: boolean }
         | { type: "track.toggleMute"; checked: boolean };
       input: {
@@ -61,6 +62,9 @@ export const trackMachine = createMachine(
       setVolume: assign(({ event }) => {
         if (event.type !== "track.setVolume") throw new Error();
         console.log("event.volume", event.volume);
+        console.log("event.channel", event.channel);
+        const scaled = dbToPercent(log(event.volume));
+        event.channel.volume.value = scaled;
         return {
           volume: event.volume,
         };
