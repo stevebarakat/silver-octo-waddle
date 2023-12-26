@@ -1,7 +1,7 @@
 import { Track } from ".";
 import Transport from "./Transport";
 import { MixerContext, TrackContext } from "../machines";
-import { Loader } from "lucide-react";
+import Loader from "./Loader";
 
 export const Mixer = () => {
   const state = MixerContext.useSelector((state) => state);
@@ -35,6 +35,6 @@ export const Mixer = () => {
       </div>
     );
   } else {
-    return <Loader />;
+    return <Loader song={song} />;
   }
 };
