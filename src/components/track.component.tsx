@@ -32,24 +32,11 @@ export const Track = () => {
         <label>M</label>
       </div>
 
-      <div className="volume-number">
-        <input
-          min={-100}
-          max={0}
-          type="number"
-          onChange={(e) => {
-            send({
-              type: "track.setVolume",
-              volume: parseFloat(e.target.value),
-            });
-          }}
-          value={volume ?? -32}
-        />
-      </div>
+      <div className="volume-number">{(volume + 100).toFixed(0)}</div>
       <input
         className="volume-slider"
         min={-100}
-        max={12}
+        max={0}
         step={0.1}
         type="range"
         value={volume ?? -32}
