@@ -6,8 +6,8 @@ import Loader from "./Loader";
 export const Mixer = () => {
   const state = MixerContext.useSelector((state) => state);
   const ready = state.matches("ready");
-  const song = state.context.initialContext.sourceSong;
-  const currentTracks = state.context.initialContext.currentTracks;
+  const song = state.context.sourceSong;
+  const currentTracks = state.context.currentTracks;
 
   if (ready) {
     return (
