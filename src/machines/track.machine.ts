@@ -1,7 +1,8 @@
 import { dbToPercent, log } from "@/utils";
 import { createActorContext } from "@xstate/react";
-import { Channel, Player } from "tone";
-import { assign, createMachine } from "xstate";
+import { animationFrameScheduler, interval } from "rxjs";
+import { Channel, Meter, Player } from "tone";
+import { assign, createMachine, fromObservable } from "xstate";
 
 export const trackMachine = createMachine(
   {
@@ -10,17 +11,32 @@ export const trackMachine = createMachine(
       id: input.id,
       muted: false,
       soloed: false,
-      track: input,
+      track: input.track,
       volume: input.volume ?? -32,
       channel: new Channel(),
+      meter: new Meter(),
+      meterVals: [],
     }),
     initial: "ready",
+    invoke: {
+      src: "tickerActor",
+      id: "start.ticker",
+      onSnapshot: {
+        actions: assign(({ context, event }) => {
+          console.log("context.meter.getValue()", context.meter.getValue());
+          console.log("context.meterVals", context.meterVals);
+        }),
+      },
+    },
     states: {
       ready: {
         entry: {
           type: "initializeTrack",
         },
         on: {
+          "track.setMeter": {
+            actions: ["setMeter"],
+          },
           "track.setVolume": {
             actions: ["setVolume"],
           },
@@ -41,9 +57,12 @@ export const trackMachine = createMachine(
         track: TrackSettings;
         volume: number;
         channel: Channel;
+        Meter: Meter;
+        meterVals: Float32Array;
       };
       events:
         | { type: "track.setVolume"; volume: number }
+        | { type: "track.setMeter"; meterVals: Float32Array }
         | { type: "track.toggleSolo"; checked: boolean }
         | { type: "track.toggleMute"; checked: boolean };
       input: {
@@ -54,11 +73,17 @@ export const trackMachine = createMachine(
   {
     actions: {
       initializeTrack: ({ context }) => {
-        const player = new Player(context.track.track.path).sync().start();
-        const channel = context.channel.toDestination();
+        const player = new Player(context.track.path).sync().start();
+        const channel = context.channel.connect(context.meter).toDestination();
         player.connect(channel);
         return { channel };
       },
+      setMeter: assign(({ context, event }) => {
+        if (event.type !== "track.setMeter") throw new Error();
+        return {
+          meterVals: context.meterVals,
+        };
+      }),
       setVolume: assign(({ context, event }) => {
         if (event.type !== "track.setVolume") throw new Error();
         const scaled = dbToPercent(log(event.volume));
@@ -81,6 +106,9 @@ export const trackMachine = createMachine(
           muted: event.checked,
         };
       }),
+    },
+    actors: {
+      tickerActor: fromObservable(() => interval(0, animationFrameScheduler)),
     },
   }
 );
