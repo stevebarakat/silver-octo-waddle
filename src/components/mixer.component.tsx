@@ -3,12 +3,12 @@ import Transport from "./Transport";
 import { MixerContext, TrackContext } from "../machines";
 
 export const Mixer = () => {
-  const { currentTracks } = MixerContext.useSelector((s) => s.context);
-  const song = currentTracks.sourceSong;
+  const { initialContext } = MixerContext.useSelector((s) => s.context);
+  const song = initialContext.sourceSong;
   return (
     <div className="mixer">
       <div className="tracks">
-        {currentTracks.currentTracks.map(
+        {initialContext.currentTracks.map(
           (track: TrackSettings, index: number) => (
             <TrackContext.Provider
               key={track.id}

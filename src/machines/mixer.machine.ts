@@ -26,10 +26,9 @@ export type MixerMachineEvents =
 export const mixerMachine = createMachine(
   {
     id: "mixer",
-    context: ({ input: currentTracks }) => ({
+    context: ({ input: initialContext }) => ({
       currentTime: "00:00:00",
-      currentTracks,
-      trackActorRefs: [],
+      initialContext,
     }),
     initial: "idle",
     states: {

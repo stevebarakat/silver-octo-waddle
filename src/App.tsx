@@ -8,7 +8,7 @@ const sourceSong = roxanne;
 const currentTracks = sourceSong.tracks.map((track) => ({
   ...track,
   ...defaultTrackData,
-  songSongSlug: sourceSong.slug,
+  sourceSongSlug: sourceSong.slug,
 }));
 
 const initialContext = { sourceSong, currentTracks };
