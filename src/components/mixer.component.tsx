@@ -9,7 +9,6 @@ export const Mixer = () => {
   const song = state.context.initialContext.sourceSong;
   const currentTracks = state.context.initialContext.currentTracks;
 
-  console.log("state", state);
   if (ready) {
     return (
       <div className="mixer">
