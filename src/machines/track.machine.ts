@@ -12,10 +12,10 @@ export const trackMachine = createMachine(
       muted: false,
       soloed: false,
       track: input.track,
-      volume: input.volume ?? -32,
+      volume: input.track.volume,
       channel: new Channel(),
       meter: new Meter(),
-      meterVals: [],
+      meterVals: new Float32Array(),
     }),
     initial: "ready",
     invoke: {
@@ -23,8 +23,9 @@ export const trackMachine = createMachine(
       id: "start.ticker",
       onSnapshot: {
         actions: assign(({ context, event }) => {
-          console.log("context.meter.getValue()", context.meter.getValue());
-          console.log("context.meterVals", context.meterVals);
+          return {
+            meterVals: context.meter.getValue(),
+          };
         }),
       },
     },
