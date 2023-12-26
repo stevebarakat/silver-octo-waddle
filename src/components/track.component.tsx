@@ -14,7 +14,6 @@ export const Track = () => {
             send({
               type: "track.toggleSolo",
               checked: e.currentTarget.checked,
-              channel,
             });
           }}
         />
@@ -27,7 +26,6 @@ export const Track = () => {
             send({
               type: "track.toggleMute",
               checked: e.currentTarget.checked,
-              channel,
             });
           }}
         />
@@ -43,7 +41,6 @@ export const Track = () => {
             send({
               type: "track.setVolume",
               volume: parseFloat(e.target.value),
-              channel,
             });
           }}
           value={volume ?? -32}
@@ -61,7 +58,6 @@ export const Track = () => {
           send({
             type: "track.setVolume",
             volume,
-            channel,
           });
         }}
       />

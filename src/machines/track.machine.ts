@@ -43,9 +43,9 @@ export const trackMachine = createMachine(
         channel: Channel;
       };
       events:
-        | { type: "track.setVolume"; volume: number; channel: Channel }
-        | { type: "track.toggleSolo"; checked: boolean; channel: Channel }
-        | { type: "track.toggleMute"; checked: boolean; channel: Channel };
+        | { type: "track.setVolume"; volume: number }
+        | { type: "track.toggleSolo"; checked: boolean }
+        | { type: "track.toggleMute"; checked: boolean };
       input: {
         id: string;
       };
@@ -59,24 +59,24 @@ export const trackMachine = createMachine(
         player.connect(channel);
         return { channel };
       },
-      setVolume: assign(({ event }) => {
+      setVolume: assign(({ context, event }) => {
         if (event.type !== "track.setVolume") throw new Error();
         const scaled = dbToPercent(log(event.volume));
-        event.channel.volume.value = scaled;
+        context.channel.volume.value = scaled;
         return {
           volume: event.volume,
         };
       }),
-      toggleSolo: assign(({ event }) => {
+      toggleSolo: assign(({ context, event }) => {
         if (event.type !== "track.toggleSolo") throw new Error();
-        event.channel.solo = event.checked;
+        context.channel.solo = event.checked;
         return {
           soloed: event.checked,
         };
       }),
-      toggleMute: assign(({ event }) => {
+      toggleMute: assign(({ context, event }) => {
         if (event.type !== "track.toggleMute") throw new Error();
-        event.channel.mute = event.checked;
+        context.channel.mute = event.checked;
         return {
           muted: event.checked,
         };
