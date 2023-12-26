@@ -14,6 +14,7 @@ export const Track = () => {
             send({
               type: "track.toggleSolo",
               checked: e.currentTarget.checked,
+              channel,
             });
           }}
         />
@@ -26,6 +27,7 @@ export const Track = () => {
             send({
               type: "track.toggleMute",
               checked: e.currentTarget.checked,
+              channel,
             });
           }}
         />
@@ -40,7 +42,8 @@ export const Track = () => {
           onChange={(e) => {
             send({
               type: "track.setVolume",
-              volume: parseInt(e.target.value),
+              volume: parseFloat(e.target.value),
+              channel,
             });
           }}
           value={volume ?? -32}
@@ -55,12 +58,10 @@ export const Track = () => {
         value={volume ?? -32}
         onChange={(e) => {
           const volume = parseFloat(e.currentTarget.value);
-          // console.log("channel", channel);
-          // channel.volume.value = volume;
           send({
             type: "track.setVolume",
-            channel,
             volume,
+            channel,
           });
         }}
       />
