@@ -21,7 +21,7 @@ function Fader() {
           min={-100}
           max={0}
           step={0.1}
-          // value={volume}
+          value={volume}
           onChange={(e) => {
             const volume = parseFloat(e.currentTarget.value);
             send({
