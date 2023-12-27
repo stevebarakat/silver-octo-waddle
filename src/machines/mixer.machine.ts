@@ -8,20 +8,19 @@ import {
 import { createActorContext } from "@xstate/react";
 import { trackMachine } from "./track.machine";
 import { interval, animationFrameScheduler } from "rxjs";
-import { loaded } from "tone";
+import { Destination, loaded } from "tone";
 import {
   start as initializeAudio,
   getContext as getAudioContext,
   Transport as t,
 } from "tone";
-import { formatMilliseconds } from "@/utils";
+import { dbToPercent, formatMilliseconds, log } from "@/utils";
 
 const audio = getAudioContext();
 
 export type MixerMachineEvents =
-  | { type: "mixer.addTrack" }
-  | { type: "mixer.clearTracks" }
-  | { type: "mixer.deleteTrack"; id: string };
+  | { type: "mixer.setVolume" }
+  | { type: "mixer.setMeter" };
 
 export const mixerMachine = createMachine(
   {
@@ -49,10 +48,22 @@ export const mixerMachine = createMachine(
           src: "tickerActor",
           id: "start.ticker",
           onSnapshot: {
-            actions: assign(() => {
+            actions: assign(({ context }) => {
               const currentTime = formatMilliseconds(t.seconds);
-              return { currentTime };
+              const currentMain = context.currentMain;
+              console.log("currentMain", currentMain.meter.getValue());
+              const meterVals = context.currentMain.meter.getValue();
+              currentMain.meterVals = meterVals;
+              return { currentTime, currentMain };
             }),
+          },
+        },
+        on: {
+          "mixer.setVolume": {
+            actions: ["setVolume"],
+          },
+          "mixer.setMeter": {
+            actions: ["setMeter"],
           },
         },
         initial: "stopped",
@@ -118,7 +129,7 @@ export const mixerMachine = createMachine(
         trackRefs: ({ context, self, spawn }) =>
           context.currentTracks.map((_, index) =>
             spawn(trackMachine, {
-              input: { id: `track${index}`, parent: self },
+              input: { id: `track${index}` },
             })
           ),
       }),
@@ -141,6 +152,19 @@ export const mixerMachine = createMachine(
       rewind: () => {
         t.seconds = t.seconds - 10;
       },
+      setMeter: assign(({ context, event }) => {
+        if (event.type !== "mixer.setMeter") throw new Error();
+        return {
+          meterVals: context.currentMain.meterVals,
+        };
+      }),
+      setVolume: assign(({ context, event }) => {
+        console.log("message");
+        if (event.type !== "mixer.setVolume") throw new Error();
+        const scaled = dbToPercent(log(event.volume));
+        Destination.volume.value = scaled;
+        return { volume };
+      }),
     },
     actors: {
       loaderActor: fromPromise(async () => await loaded()),

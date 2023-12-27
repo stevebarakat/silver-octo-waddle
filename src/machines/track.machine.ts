@@ -58,7 +58,7 @@ export const trackMachine = createMachine(
         track: TrackSettings;
         volume: number;
         channel: Channel;
-        Meter: Meter;
+        meter: Meter;
         meterVals: Float32Array;
       };
       events:

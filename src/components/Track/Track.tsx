@@ -1,4 +1,4 @@
-import { TrackContext } from "../machines";
+import { TrackContext } from "../../machines";
 import Fader from "./Fader";
 import SoloMute from "./SoloMute";
 

@@ -1,26 +1,26 @@
-import { TrackContext } from "../machines";
-import { Toggle } from "./Buttons";
+import { TrackContext } from "../../machines";
+import { Toggle } from "../Buttons";
 
-function Solo() {
+function Mute() {
   const { send } = TrackContext.useActorRef();
   const context = TrackContext.useSelector((s) => s.context);
   const track = context.track;
-  const { soloed } = context;
+  const { muted } = context;
 
   return (
     <Toggle
-      id={`trackSolo${track.id}`}
-      checked={soloed}
+      id={`trackMute${track.id}`}
+      checked={muted}
       onChange={(e) => {
         send({
-          type: "track.toggleSolo",
+          type: "track.toggleMute",
           checked: e.currentTarget.checked,
         });
       }}
     >
-      S
+      M
     </Toggle>
   );
 }
 
-export default Solo;
+export default Mute;

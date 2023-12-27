@@ -1,4 +1,4 @@
-import VuMeter from "./VuMeter";
+import VuMeter from "../VuMeter";
 import { TrackContext } from "@/machines";
 
 function Fader() {
