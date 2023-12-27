@@ -9,7 +9,7 @@ const sourceSong = roxanne;
 const currentMain = {
   volume: -32,
   meter: new Meter(),
-  meterVals: [],
+  meterVals: new Float32Array(),
 };
 
 const currentTracks = sourceSong.tracks.map((track) => ({
@@ -19,6 +19,7 @@ const currentTracks = sourceSong.tracks.map((track) => ({
 }));
 
 const initialContext = { sourceSong, currentMain, currentTracks };
+export type InitialContext = typeof initialContext;
 
 function App() {
   return (

@@ -1,10 +1,5 @@
-import {
-  ActorRefFrom,
-  assign,
-  createMachine,
-  fromObservable,
-  fromPromise,
-} from "xstate";
+import { assign, createMachine, fromObservable, fromPromise } from "xstate";
+import type { InitialContext } from "@/App";
 import { createActorContext } from "@xstate/react";
 import { trackMachine } from "./track.machine";
 import { interval, animationFrameScheduler } from "rxjs";
@@ -19,8 +14,8 @@ import { dbToPercent, formatMilliseconds, log } from "@/utils";
 const audio = getAudioContext();
 
 export type MixerMachineEvents =
-  | { type: "mixer.setVolume" }
-  | { type: "mixer.setMeter" };
+  | { type: "setVolume"; volume: number }
+  | { type: "setMeter" };
 
 export const mixerMachine = createMachine(
   {
@@ -48,9 +43,16 @@ export const mixerMachine = createMachine(
           src: "tickerActor",
           id: "start.ticker",
           onSnapshot: {
-            actions: assign(() => {
+            actions: assign(({ context, event }) => {
               const currentTime = formatMilliseconds(t.seconds);
-              return { currentTime };
+              Destination.connect(context.currentMain.meter);
+              const meterVals = context.currentMain.meter.getValue();
+              console.log("meterVals", meterVals);
+              context.currentMain.meterVals = meterVals;
+              return {
+                meterVals,
+                currentTime,
+              };
             }),
           },
         },
@@ -111,9 +113,7 @@ export const mixerMachine = createMachine(
       },
     },
     types: {} as {
-      context: {
-        trackActorRefs: ActorRefFrom<typeof trackMachine>[];
-      };
+      context: InitialContext;
       events: MixerMachineEvents;
     },
   },
@@ -139,17 +139,16 @@ export const mixerMachine = createMachine(
         t.seconds = t.seconds - 10;
       },
       setMeter: assign(({ context, event }) => {
-        if (event.type !== "mixer.setMeter") throw new Error();
+        console.log("message");
+        if (event.type !== "setMeter") throw new Error();
         return {
           meterVals: context.currentMain.meterVals,
         };
       }),
       setVolume: assign(({ context, event }) => {
         if (event.type !== "setVolume") throw new Error();
-        console.log("message");
         const scaled = dbToPercent(log(event.volume));
         Destination.volume.value = scaled;
-        console.log("context.currentMain", context.currentMain);
         const currentMain = context.currentMain;
         currentMain.volume = event.volume;
         return { currentMain };
