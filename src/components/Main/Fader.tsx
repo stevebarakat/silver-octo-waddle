@@ -11,13 +11,13 @@ function Fader() {
     <div className="fader-wrap">
       <div className="window">{`${(volume + 100).toFixed(0)} dB`}</div>
       <div className="levels-wrap">
-        <VuMeter meterValue={meterVals} height={150} width={12} />
+        <VuMeter meterValue={meterVals} height={250} width={12} />
       </div>
       <div className="vol-wrap">
         <input
           type="range"
           id={"mainVol"}
-          className="range-y volume"
+          className="range-y volume main"
           min={-100}
           max={0}
           step={0.1}

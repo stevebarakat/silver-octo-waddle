@@ -7,6 +7,7 @@ import type {
 } from "tone";
 import type { Destination as ToneDestination } from "tone/build/esm/core/context/Destination";
 import { Transport as ToneTransport } from "tone/build/esm/core/clock/Transport";
+import { TrackSettings as TS } from "@/App";
 
 declare global {
   type Destination = ToneDestination;
@@ -56,31 +57,33 @@ declare global {
     mute: boolean;
   };
 
-  type TrackSettings = {
-    id: string;
-    name: string;
-    path: string;
-    songSlug: string;
+  type TrackSettings = TS;
 
-    // MAIN
-    volume: number;
-    volumeMode: string;
-    pan: number;
-    panMode: string;
-    soloMute: { solo: boolean; mute: boolean };
-    soloMuteMode: string;
+  // type TrackSettings = {
+  //   id: string;
+  //   name: string;
+  //   path: string;
+  //   songSlug: string;
 
-    // FX
-    fxNames: string[];
-    delaySettings: DelaySettings;
-    reverbSettings: ReverbSettings;
-    pitchShiftSettings: PitchShiftSettings;
+  //   // MAIN
+  //   volume: number;
+  //   volumeMode: string;
+  //   pan: number;
+  //   panMode: string;
+  //   soloMute: { solo: boolean; mute: boolean };
+  //   soloMuteMode: string;
 
-    // PANELS
-    panelPosition: { x: number; y: number };
-    panelSize: { width: string; height: string };
-    panelActive: boolean;
-  };
+  //   // FX
+  //   fxNames: string[];
+  //   delaySettings: DelaySettings;
+  //   reverbSettings: ReverbSettings;
+  //   pitchShiftSettings: PitchShiftSettings;
+
+  //   // PANELS
+  //   panelPosition: { x: number; y: number };
+  //   panelSize: { width: string; height: string };
+  //   panelActive: boolean;
+  // };
 
   type DelaySettings = {
     playbackMode: string | undefined;

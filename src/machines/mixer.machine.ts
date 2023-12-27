@@ -1,7 +1,6 @@
 import { assign, createMachine, fromObservable, fromPromise } from "xstate";
 import type { InitialContext } from "@/App";
 import { createActorContext } from "@xstate/react";
-import { trackMachine } from "./track.machine";
 import { interval, animationFrameScheduler } from "rxjs";
 import { Destination, loaded } from "tone";
 import {
@@ -43,11 +42,10 @@ export const mixerMachine = createMachine(
           src: "tickerActor",
           id: "start.ticker",
           onSnapshot: {
-            actions: assign(({ context, event }) => {
+            actions: assign(({ context }) => {
               const currentTime = formatMilliseconds(t.seconds);
               Destination.connect(context.currentMain.meter);
               const meterVals = context.currentMain.meter.getValue();
-              console.log("meterVals", meterVals);
               context.currentMain.meterVals = meterVals;
               return {
                 meterVals,

@@ -8,7 +8,6 @@ export const trackMachine = createMachine(
   {
     id: "track",
     context: ({ input }) => ({
-      id: input.id,
       muted: false,
       soloed: false,
       track: input.track,
@@ -22,7 +21,7 @@ export const trackMachine = createMachine(
       src: "tickerActor",
       id: "start.ticker",
       onSnapshot: {
-        actions: assign(({ context, event }) => {
+        actions: assign(({ context }) => {
           return {
             meterVals: context.meter.getValue(),
           };
@@ -52,7 +51,6 @@ export const trackMachine = createMachine(
     },
     types: {} as {
       context: {
-        id: string;
         muted: boolean;
         soloed: boolean;
         track: TrackSettings;
@@ -66,9 +64,6 @@ export const trackMachine = createMachine(
         | { type: "track.setMeter"; meterVals: Float32Array }
         | { type: "track.toggleSolo"; checked: boolean }
         | { type: "track.toggleMute"; checked: boolean };
-      input: {
-        id: string;
-      };
     },
   },
   {

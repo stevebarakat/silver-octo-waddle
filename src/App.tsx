@@ -20,6 +20,7 @@ const currentTracks = sourceSong.tracks.map((track) => ({
 
 const initialContext = { sourceSong, currentMain, currentTracks };
 export type InitialContext = typeof initialContext;
+export type TrackSettings = typeof currentTracks;
 
 function App() {
   return (

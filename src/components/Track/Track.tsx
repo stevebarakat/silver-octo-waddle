@@ -10,7 +10,7 @@ export const Track = () => {
     <div className="channel">
       <SoloMute />
       <Fader />
-      <h3 className="track-label">{track.name}</h3>
+      <span className="track-label">{track.name}</span>
     </div>
   );
 };
