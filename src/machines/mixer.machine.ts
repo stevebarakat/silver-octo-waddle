@@ -48,22 +48,10 @@ export const mixerMachine = createMachine(
           src: "tickerActor",
           id: "start.ticker",
           onSnapshot: {
-            actions: assign(({ context }) => {
+            actions: assign(() => {
               const currentTime = formatMilliseconds(t.seconds);
-              const currentMain = context.currentMain;
-              console.log("currentMain", currentMain.meter.getValue());
-              const meterVals = context.currentMain.meter.getValue();
-              currentMain.meterVals = meterVals;
-              return { currentTime, currentMain };
+              return { currentTime };
             }),
-          },
-        },
-        on: {
-          "mixer.setVolume": {
-            actions: ["setVolume"],
-          },
-          "mixer.setMeter": {
-            actions: ["setMeter"],
           },
         },
         initial: "stopped",
@@ -113,6 +101,12 @@ export const mixerMachine = createMachine(
               type: "rewind",
             },
           },
+
+          setVolume: {
+            actions: {
+              type: "setVolume",
+            },
+          },
         },
       },
     },
@@ -125,14 +119,6 @@ export const mixerMachine = createMachine(
   },
   {
     actions: {
-      initializeMixer: assign({
-        trackRefs: ({ context, self, spawn }) =>
-          context.currentTracks.map((_, index) =>
-            spawn(trackMachine, {
-              input: { id: `track${index}` },
-            })
-          ),
-      }),
       play: () => {
         if (audio.state === "suspended") {
           initializeAudio();
@@ -159,11 +145,14 @@ export const mixerMachine = createMachine(
         };
       }),
       setVolume: assign(({ context, event }) => {
+        if (event.type !== "setVolume") throw new Error();
         console.log("message");
-        if (event.type !== "mixer.setVolume") throw new Error();
         const scaled = dbToPercent(log(event.volume));
         Destination.volume.value = scaled;
-        return { volume };
+        console.log("context.currentMain", context.currentMain);
+        const currentMain = context.currentMain;
+        currentMain.volume = event.volume;
+        return { currentMain };
       }),
     },
     actors: {

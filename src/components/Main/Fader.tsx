@@ -9,7 +9,7 @@ function Fader() {
 
   return (
     <div className="fader-wrap">
-      <div className="window">{`${volume?.toFixed(0) ?? -32} dB`}</div>
+      <div className="window">{`${(volume + 100).toFixed(0)} dB`}</div>
       <div className="levels-wrap">
         <VuMeter meterValue={meterVals} height={150} width={12} />
       </div>
@@ -19,13 +19,13 @@ function Fader() {
           id={"mainVol"}
           className="range-y volume"
           min={-100}
-          max={12}
+          max={0}
           step={0.1}
-          value={volume}
+          // value={volume}
           onChange={(e) => {
             const volume = parseFloat(e.currentTarget.value);
             send({
-              type: "mixer.setVolume",
+              type: "setVolume",
               volume,
             });
           }}
